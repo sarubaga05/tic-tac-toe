@@ -50,7 +50,7 @@ time.sleep(2)
 
 # Считывание ходов игроков
 def player_move(name1, name2):
-    first_move = 1
+    count = 1
     current_player = None
 
     game_field = [[' ', 1, 2, 3],  # Игровое поле
@@ -59,7 +59,7 @@ def player_move(name1, name2):
                   [3, '-', '-', '-']]
 
     for _ in range(9):
-        if first_move % 2 != 0:  # Ход первого игрока
+        if count % 2 != 0:  # Ход первого игрока
             current_player = name1
             while True:
                 cell_1 = input(f'Игрок {name1}, введите номер ячейки: ').split()
@@ -98,21 +98,21 @@ def player_move(name1, name2):
                 else:
                     print('Данная ячейка уже была использована')
 
-        if first_move >= 5 and check_status(game_field):  # Проверка текущего результата
+        if count >= 5 and check_status(game_field):  # Проверка текущего результата
             print('')
             print(f'Игрок {current_player} победил(а)!')
             time.sleep(2)
             print('')
             print('Спасибо за игру!')
             break
-        elif first_move == 9 and not check_status(game_field):
+        elif count == 9 and not check_status(game_field):
             print('')
             print('Ничья!')
             time.sleep(2)
             print('')
             print('Спасибо за игру!')
 
-        first_move += 1
+        count += 1
 
 
 # Вывод игрового поля на экран
