@@ -61,20 +61,38 @@ def player_move(name1, name2, first_move):  # Считывание ходов и
     for i in range(9):
         if first_move % 2 != 0:  # Ход первого игрока
             while True:
-                cell_1 = list(map(int, (input(f'Игрок {name1}, введите номер ячейки: ').split())))
-                if check_field(cell_1):
+                cell_1 = input(f'Игрок {name1}, введите номер ячейки: ').split()
+                if len(cell_1) == 2 and cell_1[0].isdigit() and cell_1[1].isdigit():
+                    cell_1 = list(map(int, cell_1))
+                else:
+                    print('Номер ячейки введен некорректно')
+                    continue
+
+                if check_field(cell_1, game_field) == 1:
                     game_field[cell_1[0]][cell_1[1]] = 'x'
                     show_game_field(game_field)
+                    break
+                elif check_field(cell_1, game_field) == 2:
+                    print('Номер ячейки введен некорректно')
                 else:
-                    pass
+                    print('Данная ячейка уже была использована')
         else:  # Ход второго игрока
             while True:
-                cell_2 = list(map(int, (input(f'Игрок {name2}, введите номер ячейки: ').split())))
-                if check_field(cell_2):
+                cell_2 = input(f'Игрок {name2}, введите номер ячейки: ').split()
+                if len(cell_2) == 2 and cell_2[0].isdigit() and cell_2[1].isdigit():
+                    cell_2 = list(map(int, cell_2))
+                else:
+                    print('Номер ячейки введен некорректно')
+                    continue
+
+                if check_field(cell_2, game_field) == 1:
                     game_field[cell_2[0]][cell_2[1]] = '0'
                     show_game_field(game_field)
+                    break
+                elif check_field(cell_2, game_field) == 2:
+                    print('Номер ячейки введен некорректно')
                 else:
-                    pass
+                    print('Данная ячейка уже была использована')
 
         check_status(game_field)
         first_move += 1
@@ -87,8 +105,15 @@ def show_game_field(game_field):  # Вывод игрового поля на э
         print()
 
 
-def check_field(cell):  # Проверка введенной ячейки на корректность
-    pass
+def check_field(cell, game_field):  # Проверка введенной ячейки на корректность
+    if cell[0] < 1 or cell[0] > 3:
+        return 2
+    elif cell[1] < 1 or cell[1] > 3:
+        return 2
+    elif game_field[cell[0]][cell[1]] != '-':
+        return 3
+    else:
+        return 1
 
 
 def check_status(game_field):  # Проверка текущего результата игры
