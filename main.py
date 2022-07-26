@@ -58,7 +58,7 @@ def player_move(name1, name2, first_move):  # Считывание ходов и
                   [2, '-', '-', '-'],
                   [3, '-', '-', '-']]
 
-    for i in range(9):
+    for _ in range(9):
         if first_move % 2 != 0:  # Ход первого игрока
             while True:
                 cell_1 = input(f'Игрок {name1}, введите номер ячейки: ').split()
@@ -94,8 +94,9 @@ def player_move(name1, name2, first_move):  # Считывание ходов и
                 else:
                     print('Данная ячейка уже была использована')
 
-        check_status(game_field)
         first_move += 1
+        if check_status(game_field):
+            pass
 
 
 def show_game_field(game_field):  # Вывод игрового поля на экран
@@ -117,7 +118,24 @@ def check_field(cell, game_field):  # Проверка введенной яче
 
 
 def check_status(game_field):  # Проверка текущего результата игры
-    pass
+    flag = False
+    for i in range(1, len(game_field) - 1):
+        for _ in range(1):
+            if game_field[i][1] == game_field[i][2] == game_field[i][3]:
+                flag = True
+                break
+
+    if flag:
+        return flag
+
+    for i in range(1, len(game_field) - 1):
+        for _ in range(1):
+            if game_field[1][i] == game_field[2][i] == game_field[3][i]:
+                flag = True
+                break
+
+    if flag:
+        return flag
 
 
 '''
