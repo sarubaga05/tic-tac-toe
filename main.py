@@ -51,8 +51,6 @@ time.sleep(2)
 # Считывание ходов игроков
 def player_move(name1, name2):
     count = 1
-    current_player = None
-
     game_field = [[' ', 1, 2, 3],  # Игровое поле
                   [1, '-', '-', '-'],
                   [2, '-', '-', '-'],
