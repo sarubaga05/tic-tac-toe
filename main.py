@@ -1,8 +1,6 @@
 import random
 import time
 
-first_move = None
-'''
 print('Приветствую вас в игре крестики-нолики!')  # Вступление
 time.sleep(1)
 print('...')
@@ -36,22 +34,22 @@ print('')
 print('')
 time.sleep(2)
 
-print("""Перед началом игры напомним правила.  # Правила игры
+# Правила игры
+print("""Перед началом игры напомним правила.  
 Игроки по очереди ставят на свободные клетки поля 3×3 знаки (один всегда крестики, другой всегда нолики). 
 Первый, выстроивший в ряд 3 своих фигуры по вертикали, горизонтали или диагонали, выигрывает. 
 Первый ход делает игрок, ставящий крестики.
 """)
 time.sleep(10)
 print('Игра начинается, удачи!')
+print('')
 time.sleep(2)
-'''
-
-name_1 = 'test1'
-name_2 = 'test2'
 
 
-def player_move(name1, name2, first_move):  # Считывание ходов игроков
+# Считывание ходов игроков
+def player_move(name1, name2):
     first_move = 1
+    current_player = None
 
     game_field = [[' ', 1, 2, 3],  # Игровое поле
                   [1, '-', '-', '-'],
@@ -60,6 +58,7 @@ def player_move(name1, name2, first_move):  # Считывание ходов и
 
     for _ in range(9):
         if first_move % 2 != 0:  # Ход первого игрока
+            current_player = name1
             while True:
                 cell_1 = input(f'Игрок {name1}, введите номер ячейки: ').split()
                 if len(cell_1) == 2 and cell_1[0].isdigit() and cell_1[1].isdigit():
@@ -71,12 +70,14 @@ def player_move(name1, name2, first_move):  # Считывание ходов и
                 if check_field(cell_1, game_field) == 1:
                     game_field[cell_1[0]][cell_1[1]] = 'x'
                     show_game_field(game_field)
+                    print('')
                     break
                 elif check_field(cell_1, game_field) == 2:
                     print('Номер ячейки введен некорректно')
                 else:
                     print('Данная ячейка уже была использована')
         else:  # Ход второго игрока
+            current_player = name2
             while True:
                 cell_2 = input(f'Игрок {name2}, введите номер ячейки: ').split()
                 if len(cell_2) == 2 and cell_2[0].isdigit() and cell_2[1].isdigit():
@@ -88,25 +89,40 @@ def player_move(name1, name2, first_move):  # Считывание ходов и
                 if check_field(cell_2, game_field) == 1:
                     game_field[cell_2[0]][cell_2[1]] = '0'
                     show_game_field(game_field)
+                    print('')
                     break
                 elif check_field(cell_2, game_field) == 2:
                     print('Номер ячейки введен некорректно')
                 else:
                     print('Данная ячейка уже была использована')
 
+        if first_move >= 5 and check_status(game_field):  # Проверка текущего результата
+            print('')
+            print(f'Игрок {current_player} победил!')
+            time.sleep(2)
+            print('')
+            print('Спасибо за игру!')
+            break
+        elif first_move == 9 and not check_status(game_field):
+            print('')
+            print('Ничья!')
+            time.sleep(2)
+            print('')
+            print('Спасибо за игру!')
+
         first_move += 1
-        if check_status(game_field):
-            pass
 
 
-def show_game_field(game_field):  # Вывод игрового поля на экран
+# Вывод игрового поля на экран
+def show_game_field(game_field):
     for row in game_field:
         for col in row:
             print(col, end=' ')
         print()
 
 
-def check_field(cell, game_field):  # Проверка введенной ячейки на корректность
+# Проверка введенной ячейки на корректность
+def check_field(cell, game_field):
     if cell[0] < 1 or cell[0] > 3:
         return 2
     elif cell[1] < 1 or cell[1] > 3:
@@ -117,32 +133,39 @@ def check_field(cell, game_field):  # Проверка введенной яче
         return 1
 
 
-def check_status(game_field):  # Проверка текущего результата игры
+# Проверка текущего результата игры
+def check_status(game_field):
     flag = False
-    for i in range(1, len(game_field) - 1):
+    for i in range(1, len(game_field)):
         for _ in range(1):
-            if game_field[i][1] == game_field[i][2] == game_field[i][3]:
+            if game_field[i][1] == game_field[i][2] == game_field[i][3] != '-':
                 flag = True
                 break
 
     if flag:
         return flag
 
-    for i in range(1, len(game_field) - 1):
+    for i in range(1, len(game_field)):
         for _ in range(1):
-            if game_field[1][i] == game_field[2][i] == game_field[3][i]:
+            if game_field[1][i] == game_field[2][i] == game_field[3][i] != '-':
                 flag = True
                 break
 
     if flag:
         return flag
 
+    if game_field[1][1] == game_field[2][2] == game_field[3][3] != '-':
+        flag = True
+        return flag
 
-'''
+    if game_field[3][1] == game_field[2][2] == game_field[1][3] != '-':
+        flag = True
+        return flag
+
+    return flag
+
+
 if first_move == 1:
-    player_move(name_1, name_2, first_move)
+    player_move(name_1, name_2)
 elif first_move == 2:
-    player_move(name_2, name_1, first_move)
-'''
-
-player_move(name_1, name_2, first_move)
+    player_move(name_2, name_1)
