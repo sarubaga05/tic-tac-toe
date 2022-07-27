@@ -50,7 +50,6 @@ time.sleep(2)
 
 # Считывание ходов игроков
 def player_move(name1, name2):
-
     game_field = [[' ', 1, 2, 3],  # Игровое поле
                   [1, '-', '-', '-'],
                   [2, '-', '-', '-'],
@@ -139,20 +138,12 @@ def check_status(game_field):
             if game_field[i][1] == game_field[i][2] == game_field[i][3] != '-':
                 flag = True
                 return flag
-                #break
-
-#    if flag:
-#        return flag
 
     for i in range(1, len(game_field)):  # Проверка наличия трех символов в столбце подряд
         for _ in range(1):
             if game_field[1][i] == game_field[2][i] == game_field[3][i] != '-':
                 flag = True
                 return flag
-                #break
-
-#    if flag:
-#        return flag
 
     if game_field[1][1] == game_field[2][2] == game_field[3][3] != '-':  # Проверка наличия трех символов по диагонали
         flag = True
