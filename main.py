@@ -50,67 +50,65 @@ time.sleep(2)
 
 # Считывание ходов игроков
 def player_move(name1, name2):
-    count = 1
+
     game_field = [[' ', 1, 2, 3],  # Игровое поле
                   [1, '-', '-', '-'],
                   [2, '-', '-', '-'],
                   [3, '-', '-', '-']]
 
-    for _ in range(9):
+    for count in range(1, 10):  # Цикл для обработки ходов игроков
         if count % 2 != 0:  # Ход первого игрока
             current_player = name1
             while True:
-                cell_1 = input(f'Игрок {name1}, введите номер ячейки: ').split()
-                if len(cell_1) == 2 and cell_1[0].isdigit() and cell_1[1].isdigit():
+                cell_1 = input(f'Игрок {name1}, введите номер ячейки: ').split()  # Ввод ячейки
+                if len(cell_1) == 2 and cell_1[0].isdigit() and cell_1[1].isdigit():  # Проверка введены ли числа
                     cell_1 = list(map(int, cell_1))
                 else:
                     print('Номер ячейки введен некорректно')
                     continue
 
-                if check_field(cell_1, game_field) == 1:
+                if check_field(cell_1, game_field) == 1:  # Если ячейка введена корректно, добавляем её на поле
                     game_field[cell_1[0]][cell_1[1]] = 'x'
                     show_game_field(game_field)
                     print('')
                     break
-                elif check_field(cell_1, game_field) == 2:
+                elif check_field(cell_1, game_field) == 2:  # Если ячейка введена некорректно, оповещаем об этом
                     print('Номер ячейки введен некорректно')
                 else:
                     print('Данная ячейка уже была использована')
         else:  # Ход второго игрока
             current_player = name2
             while True:
-                cell_2 = input(f'Игрок {name2}, введите номер ячейки: ').split()
-                if len(cell_2) == 2 and cell_2[0].isdigit() and cell_2[1].isdigit():
+                cell_2 = input(f'Игрок {name2}, введите номер ячейки: ').split()  # Ввод ячейки
+                if len(cell_2) == 2 and cell_2[0].isdigit() and cell_2[1].isdigit():  # Проверка введены ли числа
                     cell_2 = list(map(int, cell_2))
                 else:
                     print('Номер ячейки введен некорректно')
                     continue
 
-                if check_field(cell_2, game_field) == 1:
+                if check_field(cell_2, game_field) == 1:  # Если ячейка введена корректно, добавляем её на поле
                     game_field[cell_2[0]][cell_2[1]] = '0'
                     show_game_field(game_field)
                     print('')
                     break
-                elif check_field(cell_2, game_field) == 2:
+                elif check_field(cell_2, game_field) == 2:  # Если ячейка введена некорректно, оповещаем об этом
                     print('Номер ячейки введен некорректно')
                 else:
                     print('Данная ячейка уже была использована')
 
-        if count >= 5 and check_status(game_field):  # Проверка текущего результата
+        if count >= 5 and check_status(game_field):  # Проверка текущего результата на наличие победы
             print('')
             print(f'Игрок {current_player} победил(а)!')
             time.sleep(2)
             print('')
             print('Спасибо за игру!')
             break
-        elif count == 9 and not check_status(game_field):
+        elif count == 9 and not check_status(game_field):  # Проверка текущего результата на наличие ничьи
             print('')
             print('Ничья!')
             time.sleep(2)
             print('')
             print('Спасибо за игру!')
-
-        count += 1
 
 
 # Вывод игрового поля на экран
@@ -123,11 +121,11 @@ def show_game_field(game_field):
 
 # Проверка введенной ячейки на корректность
 def check_field(cell, game_field):
-    if cell[0] < 1 or cell[0] > 3:
+    if cell[0] < 1 or cell[0] > 3:  # Проверка корректного номера ячейки
         return 2
-    elif cell[1] < 1 or cell[1] > 3:
+    elif cell[1] < 1 or cell[1] > 3:  # Проверка корректного номера ячейки
         return 2
-    elif game_field[cell[0]][cell[1]] != '-':
+    elif game_field[cell[0]][cell[1]] != '-':  # Проверка использована ли ячейка
         return 3
     else:
         return 1
@@ -136,29 +134,31 @@ def check_field(cell, game_field):
 # Проверка текущего результата игры
 def check_status(game_field):
     flag = False
-    for i in range(1, len(game_field)):
+    for i in range(1, len(game_field)):  # Проверка наличия трех символов в строке подряд
         for _ in range(1):
             if game_field[i][1] == game_field[i][2] == game_field[i][3] != '-':
                 flag = True
-                break
+                return flag
+                #break
 
-    if flag:
-        return flag
+#    if flag:
+#        return flag
 
-    for i in range(1, len(game_field)):
+    for i in range(1, len(game_field)):  # Проверка наличия трех символов в столбце подряд
         for _ in range(1):
             if game_field[1][i] == game_field[2][i] == game_field[3][i] != '-':
                 flag = True
-                break
+                return flag
+                #break
 
-    if flag:
-        return flag
+#    if flag:
+#        return flag
 
-    if game_field[1][1] == game_field[2][2] == game_field[3][3] != '-':
+    if game_field[1][1] == game_field[2][2] == game_field[3][3] != '-':  # Проверка наличия трех символов по диагонали
         flag = True
         return flag
 
-    if game_field[3][1] == game_field[2][2] == game_field[1][3] != '-':
+    if game_field[3][1] == game_field[2][2] == game_field[1][3] != '-':  # Проверка наличия трех символов по диагонали
         flag = True
         return flag
 
